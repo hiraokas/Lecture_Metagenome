@@ -7,20 +7,14 @@
 #============================================================================================================
 
 # 解析環境構築
-conda activate metagenome
+conda activate env_metagenome
 conda install nonpareil -c bioconda
 
-# gzファイルの解凍
-gunzip QC/DRR267106_QC_1.fastq.gz --keep
-
-# gxファイルの解凍
-gunzip QC/DRR267104_QC_1.fastq.gz
-gunzip QC/DRR267106_QC_1.fastq.gz
-gunzip QC/DRR267108_QC_1.fastq.gz
-gunzip QC/DRR267110_QC_1.fastq.gz
+# ディレクトリ作成
+mkdir nonpareil
 
 # nonpareilの実行
-nonpareil -s QC/DRR267104_QC_1.fastq  -T kmer -b QC/DRR267104.nonpareil -t 4 -f fastq 
-nonpareil -s QC/DRR267106_QC_1.fastq  -T kmer -b QC/DRR267106.nonpareil -t 4 -f fastq 
-nonpareil -s QC/DRR267108_QC_1.fastq  -T kmer -b QC/DRR267108.nonpareil -t 4 -f fastq 
-nonpareil -s QC/DRR267110_QC_1.fastq  -T kmer -b QC/DRR267110.nonpareil -t 4 -f fastq 
+nonpareil -s QC/DRR267104_merge.extendedFrags.fastq -f fastq -T kmer -b nonpareil/DRR267104 -t 4
+nonpareil -s QC/DRR267106_merge.extendedFrags.fastq -f fastq -T kmer -b nonpareil/DRR267106 -t 4
+nonpareil -s QC/DRR267108_merge.extendedFrags.fastq -f fastq -T kmer -b nonpareil/DRR267108 -t 4
+nonpareil -s QC/DRR267110_merge.extendedFrags.fastq -f fastq -T kmer -b nonpareil/DRR267110 -t 4

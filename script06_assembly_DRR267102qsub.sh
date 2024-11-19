@@ -10,7 +10,7 @@
 #$ -cwd
 #$ -S /bin/bash
 
-
 source ${HOME}/miniconda3/etc/profile.d/conda.sh
-conda activate assembler
-hifiasm_meta -o assembly/DRR267102_hifiasm_meta -t 8 data/DRR267102.sra.fastq
+conda activate env_assembly
+mkdir assembly/DRR267102_hifiasm_meta/
+hifiasm_meta -o assembly/DRR267102_hifiasm_meta/DRR267102 data/DRR267102.sra.fastq -t 4

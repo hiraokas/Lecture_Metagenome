@@ -3,10 +3,10 @@
 #  hiraokas@jamstec.go.jp
 #  Created:  20241014
 #  History:  20241110
-#  --ref: Qiimeチュートリアル：https://docs.qiime2.org/2024.10/tutorials/moving-pictures/
+#  --ref: QIIME 2チュートリアル：https://docs.qiime2.org/2024.10/tutorials/moving-pictures/
 #============================================================================================================
 
-#conda環境構築とQIIME2のインストール
+#conda環境構築とQIIME 2のインストール
 conda env create -n qiime2-amplicon-2024.10 --file https://data.qiime2.org/distro/amplicon/qiime2-amplicon-2024.10-py310-linux-conda.yml
 conda activate qiime2-amplicon-2024.10
 
@@ -18,7 +18,7 @@ wget   -P qiime https://data.qiime2.org/2024.10/tutorials/importing/casava-18-pa
 unzip  -d qiime qiime/casava-18-paired-end-demultiplexed.zip 
 wget   -P qiime https://data.qiime2.org/classifiers/sklearn-1.4.2/silva/silva-138-99-nb-classifier.qza
 
-#配列データをQIIME2で扱える形式にインポートする
+#配列データをQIIME 2で扱える形式にインポートする
 qiime tools import \
   --type 'SampleData[PairedEndSequencesWithQuality]' \
   --input-path   qiime/casava-18-paired-end-demultiplexed \
@@ -39,7 +39,7 @@ qiime metadata tabulate \
   --m-input-file    qiime/stats-dada2.qza \
   --o-visualization qiime/stats-dada2.qzv
 
-#群集構造解析
+#系統アサインメント
 qiime feature-classifier classify-sklearn \
   --i-classifier     qiime/silva-138-99-nb-classifier.qza \
   --i-reads          qiime/rep-seqs-dada2.qza \
