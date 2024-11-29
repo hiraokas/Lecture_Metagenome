@@ -27,34 +27,36 @@ data_phylum$sample = sub("taxonomy/", "", sub(".kaiju.out", "", data_phylum$file
 data_table = data_phylum[data_phylum$taxon_id %ni% NA,] %>% 
              select(sample, taxon_name, percent) %>% 
              pivot_wider(names_from = taxon_name, values_from = percent) 
+
+#数値のみの行列を取得
 data_matrix= data.matrix(data_table[, colnames(data_table) != "sample"])
 
 #各サンプルで合計が100%になるように再計算
 data_matrix = data_matrix / rowSums(data_matrix) * 100
 
 #NMDS
-nmds = metaMDS((data_matrix), distance = "bray", k = 2, trymax = 20)
+nmds = metaMDS(data_matrix, distance = "bray", k = 2, trymax = 20)
 data.scores = as.data.frame(scores(nmds)$sites)  
 data.scores$sample = data_table$sample
     
 #plot
-g = ggplot(data  = data.scores,
+g = ggplot(data = data.scores,
            aes(x = NMDS1,
                y = NMDS2,
-               color =  sample)) 
+               color = sample)) 
 g = g + theme_bw()
 g = g + geom_point(show.legend = TRUE,
                    alpha       = 0.7,
                    size        = 5)
 g = g + guides(color = guide_legend(byrow = TRUE))
 g = g + theme(legend.key.size = unit(1.5, "cm"),
-              legend.title    = element_text(size  = 25),
-              legend.text     = element_text(size  = 20),
-              axis.text       = element_text(colour= "black"),
-              axis.title.x    = element_text(size  = 26),
-              axis.title.y    = element_text(size  = 26),
-              axis.text.x     = element_text(size  = 20),
-              axis.text.y     = element_text(size  = 20),
-              axis.line       = element_line(colour="black"),
+              legend.title    = element_text(size   = 25),
+              legend.text     = element_text(size   = 20),
+              axis.text       = element_text(colour = "black"),
+              axis.title.x    = element_text(size   = 26),
+              axis.title.y    = element_text(size   = 26),
+              axis.text.x     = element_text(size   = 20),
+              axis.text.y     = element_text(size   = 20),
+              axis.line       = element_line(colour = "black"),
               plot.margin     = unit(c(0.2,0,0,0), "lines")) 
 plot(g)

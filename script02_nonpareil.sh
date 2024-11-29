@@ -2,13 +2,13 @@
 #  By Satoshi Hiraoka
 #  hiraokas@jamstec.go.jp
 #  Created:  20241014
-#  History:  20241014
+#  History:  20241129
 #  - ref: http://nonpareil.readthedocs.io/en/latest/curves.html
 #============================================================================================================
 
 # 解析環境構築
 conda activate env_metagenome
-conda install nonpareil -c bioconda
+conda install nonpareil --channel bioconda
 
 # ディレクトリ作成
 mkdir nonpareil

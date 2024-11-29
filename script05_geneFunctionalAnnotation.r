@@ -12,15 +12,19 @@ if (!require("tidyverse"))    install.packages("tidyverse")
 
 #データセットの読み込み、結合
 files = list.files("annotation/", pattern="_eggnog.category.tsv", full.names = T)
-cog_count = do.call(rbind, lapply(files, function(x)(read.table(x, header=F, sep="\t", row.names=NULL))))
+cog_count = do.call(rbind, lapply(files, function(x)(read.table(x, header = F, sep="\t", row.names = NULL))))
 colnames(cog_count) = c("sample", "category", "count")
-cog_count = cog_count[cog_data$category != "-",]
+cog_count = cog_count[cog_count$category != "-",]
 
 #サンプルあたりの遺伝子数リストを与えて、相対存在率を算出
 sample_CDSnum = data.frame("DRR267104" = 429344322,
                            "DRR267106" = 471502430,
                            "DRR267108" = 373133956,
-                           "DRR267110" = 413969472)
+                           "DRR267110" = 413969472,
+                           "DRR267102" = 7514379,
+                           "DRR267105" = 5614684,
+                           "DRR267107" = 5139661,
+                           "DRR267109" = 5398201)
 cog_data = cog_count %>% 
     mutate(CDSnum = as.numeric(sample_CDSnum[sample])) %>% 
     mutate(ratio = count / CDSnum)
@@ -54,14 +58,14 @@ category_function = c(
 
 #作図
 g = ggplot(cog_data, 
-            aes (x    = factor(category, levels=rev(sort(category))),  
-                 y    = ratio,
-                 fill = sample))
+            aes (x    = factor(category, levels=rev(sort(unique(category)))),  
+                 y    = ratio * 100,
+                 fill = factor(sample, levels=rev(colnames(sample_CDSnum)))))
 g = g + theme_bw()
-g = g + geom_bar(width  = 0.8,
-                 stat   = "identity",
+g = g + geom_bar(width    = 0.8, 
+                 stat     = "identity",
                  position = "dodge",
-                 colour = "black")
+                 color   = "black")
 g = g + coord_flip() 
 g = g + xlab(NULL) + ylab("相対存在量 (%)")
 g = g + guides(fill = guide_legend(reverse = TRUE, ncol = 1))

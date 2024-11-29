@@ -2,30 +2,29 @@
 #  By Satoshi Hiraoka
 #  hiraokas@jamstec.go.jp
 #  Created:  20241109
-#  History:  20241114
+#  History:  20241129
 #  - ref: https://bioinformatics-centre.github.io/kaiju/
 #============================================================================================================
 
 # 解析環境構築
 conda activate env_metagenome
-conda install kaiju -c bioconda
+conda install kaiju --channel bioconda
 
 # ディレクトリ作成
-mkdir taxonomy
+mkdir taxonomy db
 
-# データベースのダウンロード（時間がかかる）
+# データベースの準備（時間がかかる）
 # ここでは、公式配布されているプレビルド版のうち、比較的軽量なrefseq_refを利用（解凍後ファイルサイズは49GB）
 # https://bioinformatics-centre.github.io/kaiju/downloads.html
-mkdir db
 wget https://kaiju-idx.s3.eu-central-1.amazonaws.com/2023/kaiju_db_refseq_ref_2023-07-05.tgz -P db/
 tar -xvf db/2023/kaiju_db_refseq_ref_2023-07-05.tgz -C db/
 
 # kaijuの実行(時間がかかる)
-kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i QC/DRR267104_QC_1.fastq -j QC/DRR267104_QC_2.fastq -o taxonomy/DRR267104.kaiju.out -z 4
+kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i QC/DRR267104_QC_1.fastq -j QC/DRR267104_QC_2.fastq -o taxonomy/DRR267104.kaiju.out -z 4 # Illumina
 kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i QC/DRR267106_QC_1.fastq -j QC/DRR267106_QC_2.fastq -o taxonomy/DRR267106.kaiju.out -z 4
 kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i QC/DRR267108_QC_1.fastq -j QC/DRR267108_QC_2.fastq -o taxonomy/DRR267108.kaiju.out -z 4
 kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i QC/DRR267110_QC_1.fastq -j QC/DRR267110_QC_2.fastq -o taxonomy/DRR267110.kaiju.out -z 4
-kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i data/DRR267102.sra.fastq -o taxonomy/DRR267102.kaiju.out -z 4
+kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i data/DRR267102.sra.fastq -o taxonomy/DRR267102.kaiju.out -z 4 # PacBio
 kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i data/DRR267105.sra.fastq -o taxonomy/DRR267105.kaiju.out -z 4
 kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i data/DRR267107.sra.fastq -o taxonomy/DRR267107.kaiju.out -z 4
 kaiju -t db/nodes.dmp -f db/kaiju_db_refseq_ref.fmi -i data/DRR267109.sra.fastq -o taxonomy/DRR267109.kaiju.out -z 4

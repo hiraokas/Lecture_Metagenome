@@ -12,4 +12,4 @@
 
 source ${HOME}/miniconda3/etc/profile.d/conda.sh
 conda activate env_assembly
-spades.py -1 QC/DRR267104_QC_1.fastq -2 QC/DRR267104_QC_2.fastq --threads 8 --meta -o assembly/DRR267104_spades/
+spades.py -1 QC/DRR267104_QC_1.fastq -2 QC/DRR267104_QC_2.fastq --threads 8 --meta -o assembly/DRR267104_spades/ -m 60
