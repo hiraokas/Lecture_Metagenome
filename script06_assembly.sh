@@ -40,4 +40,4 @@ cat assembly/DRR267107_hifiasm_meta/DRR267107.p_ctg.gfa |awk '/^S/{print ">"$2"\
 cat assembly/DRR267109_hifiasm_meta/DRR267109.p_ctg.gfa |awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267109_hifiasm_meta/DRR267109.p_ctg.fasta
 
 #統計値の確認
-seqkit stat assembly/DRR267104_spades/contigs.fasta assembly/DRR267102_hifiasm_meta.p_ctg.fasta
+seqkit stat assembly/DRR267104_spades/contigs.fasta assembly/DRR267102_hifiasm_meta/DRR267102.p_ctg.fasta

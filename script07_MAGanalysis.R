@@ -2,7 +2,7 @@
 #  By Satoshi Hiraoka
 #  hiraokas@jamstec.go.jp
 #  Forked:  20241117
-#  History: 20241120
+#  History: 20241201
 #  - Making circle phylogenetic tree 
 #==========================================================================================
 
@@ -15,20 +15,29 @@ if (!require("ggtree")) BiocManager::install("ggtree")
 
 MainTree = read.tree(file = "gtdbtk/MAG/classify/gtdbtk.backbone.bac120.classify.tree")
 node_annotation             = data.frame(label  = MainTree$tip.label)
-node_annotation$genome_type = ifelse(str_detect(node_annotation$label, "DRR"), "MAG", "GTDB")
+node_annotation$genome_type = ifelse(str_detect(node_annotation$label, "DRR"), "MAG", "GTDB") #ラベル名に「DRR」とあればMAGだと判断する
 
-g = ggtree(MainTree, layout = "circular")  %<+% node_annotation 
-g = g + geom_tippoint(aes(color = genome_type, size = genome_type), shape = 16 , alpha = 0.8) 
-g = g + scale_color_manual(values = setNames(c("red", "gray"), c("MAG", "GTDB")), name = "")
-g = g + scale_size_manual( values = setNames(c(4,0.5),         c("MAG", "GTDB")))
-g = g + guides(color = guide_legend(override.aes = list(alpha=1,size=6), reverse = TRUE), 
-               size  = FALSE)
-g = g + theme(legend.key.width  = unit(1, "cm"),
-              legend.key.height = unit(1, "cm"),
-              legend.title      = element_text(face = "bold", size   = 22),
-              legend.text       = element_text(size = 18),
-              legend.position   = 'right',
-              legend.direction  = "vertical",
-              plot.margin       = unit(c(0,0,0,0), "cm"))
+#作図
+g = ggtree(MainTree, layout = "circular")  %<+% node_annotation +
+  #系統樹の設定
+  geom_tippoint(aes(color = genome_type, size = genome_type), shape = 16 , alpha = 0.8) +
+  #ノードの色を設定
+  scale_color_manual(values = setNames(c("red", "gray"), c("MAG", "GTDB")), name = "") +
+  #ノードのサイズを設定
+  scale_size_manual( values = setNames(c(4,0.5),         c("MAG", "GTDB"))) +
+  #凡例を表示させる
+  guides(color = guide_legend(override.aes = list(alpha=1,size=6), reverse = TRUE), 
+         size  = FALSE) +
+  # 凡例の体裁と余白を調整
+  theme(legend.key.width  = unit(1, "cm"),
+        legend.key.height = unit(1, "cm"),
+        legend.key        = element_rect(fill = NA, color = NA),
+        legend.text       = element_text(size = 24),
+        legend.background = element_rect(fill = NA, color = NA),
+        legend.position   = c(0.9, 0.5),
+        plot.margin       = unit(c(-2,0,-2,-4), "cm"))
 plot(g)
 
+#画像をファイル出力
+dev.copy(png, file = "script07_MAGanalysis.png", width = 600, height = 600)
+dev.off()
