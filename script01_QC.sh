@@ -2,7 +2,7 @@
 #  By Satoshi Hiraoka
 #  hiraokas@jamstec.go.jp
 #  Created:  20241014
-#  History:  20241129
+#  History:  20250310
 #  - ref: http://nonpareil.readthedocs.io/en/latest/curves.html
 #============================================================================================================
 
@@ -14,7 +14,7 @@ bash Miniconda3-latest-Linux-x86_64.sh
 conda create --name env_metagenome seqkit sra-tools trim-galore bowtie2 ncbi-acc-download prinseq-plus-plus fastqc flash2 --channel bioconda
 conda activate env_metagenome
 
-# ディレクトリ作成
+# 作業ディレクトリの作成
 mkdir data QC
 
 # シーケンスデータのダウンロード（すこし時間がかかる）
@@ -27,6 +27,7 @@ prefetch DRR267105 --output-directory data/  # PacBio
 prefetch DRR267107 --output-directory data/  # PacBio
 prefetch DRR267109 --output-directory data/  # PacBio
 ncbi-acc-download -F fasta NC_001422.1  #PhiX
+mv NC_001422.1.fa data/ 
 
 # sra形式をfastq形式に変換する
 fasterq-dump data/*/*.sra --outdir data/ --split-files --progress --threads 4
@@ -69,18 +70,17 @@ flash2 QC/DRR267106_QC_1.fastq QC/DRR267106_QC_2.fastq --output-directory QC/ --
 flash2 QC/DRR267108_QC_1.fastq QC/DRR267108_QC_2.fastq --output-directory QC/ --output-prefix DRR267108_merge --threads 4
 flash2 QC/DRR267110_QC_1.fastq QC/DRR267110_QC_2.fastq --output-directory QC/ --output-prefix DRR267110_merge --threads 4
 
-# リード数等の基礎統計の確認
-seqkit stat data/*.sra_*.fastq         # 生リード
-seqkit stat QC/*_QC_*.fastq            # QCペアエンド
-seqkit stat QC/*_.extendedFrags.fastq  # QCマージ
+# リード数などの基礎統計の確認
+seqkit stat data/*.sra_*.fastq              # 生リード
+seqkit stat QC/*_QC_*.fastq                 # QCペアエンド
+seqkit stat QC/*_merge.extendedFrags.fastq  # QCマージ
 
-# DRR267104についてのみ表示
+# DRR267104についてのみ統計値を表示させる場合
 seqkit stat data/DRR267104.sra_*.fastq              # 生リード
 seqkit stat QC/DRR267104_QC_*.fastq                 # QCペアエンド
 seqkit stat QC/DRR267104_merge.extendedFrags.fastq  # QCマージ
 
-# FastQCによるレポート出力（QC前後）
+# FastQCによるレポート出力（QC前後で比較）
 fastqc data/*.sra_*.fastq             --outdir data/ # 生リード
 fastqc QC/*_QC_*.fastq                --outdir QC/   # QCペアエンド
 fastqc QC/*_merge.extendedFrags.fastq --outdir QC/   # QCマージ
-

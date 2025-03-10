@@ -10,7 +10,7 @@
 conda activate env_metagenome
 conda install kaiju --channel bioconda
 
-# ディレクトリ作成
+# 作業ディレクトリの作成
 mkdir taxonomy db
 
 # データベースの準備（時間がかかる）

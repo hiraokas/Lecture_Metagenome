@@ -10,7 +10,7 @@
 conda activate env_metagenome
 conda install prodigal eggnog-mapper --channel bioconda
 
-# ディレクトリ作成
+# 作業ディレクトリの作成
 mkdir gene annotation
 
 # fastqファイルをfastaファイルへ変換する

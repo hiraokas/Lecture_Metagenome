@@ -10,7 +10,7 @@
 conda env create --name qiime2-amplicon-2024.10 --file https://data.qiime2.org/distro/amplicon/qiime2-amplicon-2024.10-py310-linux-conda.yml
 conda activate qiime2-amplicon-2024.10
 
-# 作業ディレクトリの作成
+# 作業作業ディレクトリの作成
 mkdir qiime
 
 # データベースのダウンロード

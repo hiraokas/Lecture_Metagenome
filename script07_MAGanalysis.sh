@@ -11,9 +11,8 @@ conda activate env_assembly
 conda install metabat2=2.17    --channel bioconda  # デフォルトでは古いバージョンのMetaBAT2がインストールされるため、明示的にバージョンを指定する
 conda install samtools bowtie2 --channel bioconda
 
-# ディレクトリ作成
-mkdir bin/
-
+# 作業ディレクトリの作成
+mkdir bin
 
 # Bowtie2を用いてショートリードをコンティグにマッピングする (DRR267104;Illuminaコンティグ)
 bowtie2-build assembly/DRR267104_spades/contigs.fasta assembly/DRR267104_spades/contigs.fasta --threads 4
