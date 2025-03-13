@@ -16,15 +16,15 @@ cog_count = do.call(rbind, lapply(files, function(x)(read.table(x, header = F, s
 colnames(cog_count) = c("sample", "category", "count")
 cog_count = cog_count[cog_count$category != "-",]
 
-# サンプルあたりの遺伝子数リストを与えて、相対存在率を算出
-sample_CDSnum = data.frame("DRR267104" = 429344322,
-                           "DRR267106" = 471502430,
-                           "DRR267108" = 373133956,
-                           "DRR267110" = 413969472,
-                           "DRR267102" = 7514379,
-                           "DRR267105" = 5614684,
-                           "DRR267107" = 5139661,
-                           "DRR267109" = 5398201)
+# 各サンプルの遺伝子数リストを与えて、相対存在率を算出
+sample_CDSnum = data.frame(#"DRR267104" = 4366132,  # Illumina
+                           #"DRR267106" = 5095469,
+                           #"DRR267108" = 3849497,
+                           #"DRR267110" = 4315469
+                           "DRR267102" = 7514379,  # PacBio
+                           "DRR267105" = 5585360,
+                           "DRR267107" = 5109850,
+                           "DRR267109" = 5369598)
 cog_data = cog_count %>% 
            mutate(CDSnum = as.numeric(sample_CDSnum[sample])) %>% 
            mutate(ratio = count / CDSnum)

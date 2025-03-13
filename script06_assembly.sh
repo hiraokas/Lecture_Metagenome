@@ -15,20 +15,20 @@ conda activate env_assembly
 # 作業ディレクトリの作成
 mkdir assembly
 
-# metaSPAdesの実行（ショートリード）【ローカル環境で実行する場合】
+# metaSPAdesの実行（ショートリード）【ジョブスケジューラを利用しない場合】
 spades.py -1 QC/DRR267104_QC_1.fastq -2 QC/DRR267104_QC_2.fastq --meta -o assembly/DRR267104_spades/ --memory 20 --threads 4
 
-# hifiasm-metaの実行（ロングリードHiFi）【ローカル環境で実行する場合】
+# hifiasm-metaの実行（ロングリードHiFi）【ジョブスケジューラを利用しない場合】
 mkdir assembly/DRR267102_hifiasm_meta/  #事前に出力ディレクトリを作成する必要がある
 hifiasm_meta -o assembly/DRR267102_hifiasm_meta/DRR267102 data/DRR267102.sra.fastq -t 4
 
-# metaSPAdesの実行（ショートリード）【qsubでジョブを投入する場合】
+# metaSPAdesの実行（ショートリード）【ジョブスケジューラを利用する場合】
 sbatch script06_assembly_DRR267104sbatch.sh --output script06_assembly_DRR267104sbatch.sh.out --error script06_assembly_DRR267104sbatch.sh.err
 sbatch script06_assembly_DRR267106sbatch.sh --output script06_assembly_DRR267106sbatch.sh.out --error script06_assembly_DRR267106sbatch.sh.err
 sbatch script06_assembly_DRR267108sbatch.sh --output script06_assembly_DRR267108sbatch.sh.out --error script06_assembly_DRR267108sbatch.sh.err
 sbatch script06_assembly_DRR267110sbatch.sh --output script06_assembly_DRR267110sbatch.sh.out --error script06_assembly_DRR267110sbatch.sh.err
 
-# hifiasm-metaの実行（ロングリードHiFi）【qsubでジョブを投入する場合】
+# hifiasm-metaの実行（ロングリードHiFi）【ジョブスケジューラを利用する場合】
 sbatch script06_assembly_DRR267102sbatch.sh --output script06_assembly_DRR267102sbatch.sh.out --error script06_assembly_DRR267102sbatch.sh.err
 sbatch script06_assembly_DRR267105sbatch.sh --output script06_assembly_DRR267105sbatch.sh.out --error script06_assembly_DRR267105sbatch.sh.err
 sbatch script06_assembly_DRR267107sbatch.sh --output script06_assembly_DRR267107sbatch.sh.out --error script06_assembly_DRR267107sbatch.sh.err

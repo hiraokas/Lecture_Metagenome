@@ -14,7 +14,7 @@ if (!require("treeio")) BiocManager::install("treeio")
 if (!require("ggtree")) BiocManager::install("ggtree")
 
 MainTree = read.tree(file = "gtdbtk/MAG/classify/gtdbtk.backbone.bac120.classify.tree")
-node_annotation             = data.frame(label  = MainTree$tip.label)
+node_annotation             = data.frame(label = MainTree$tip.label)
 node_annotation$genome_type = ifelse(str_detect(node_annotation$label, "DRR"), 
                                      "MAG", "GTDB") #ラベル名に「DRR」とあればMAGだと判断する
 
