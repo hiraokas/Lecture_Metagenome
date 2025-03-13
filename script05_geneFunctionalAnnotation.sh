@@ -2,13 +2,13 @@
 #  By Satoshi Hiraoka
 #  hiraokas@jamstec.go.jp
 #  Created:  20241109
-#  History:  20241129
-#  - ref: https://bioinformatics-centre.github.io/kaiju/
+#  History:  20250310
+#  - ref: https://github.com/eggnogdb/eggnog-mapper
 #============================================================================================================
 
 # 解析環境構築
 conda activate env_metagenome
-conda install prodigal eggnog-mapper --channel bioconda
+conda install prodigal eggnog-mapper --channel bioconda --channel conda-forge
 
 # 作業ディレクトリの作成
 mkdir gene annotation
@@ -24,7 +24,7 @@ seqkit fq2fa data/DRR267107.sra.fastq               --out-file data/DRR267107.fa
 seqkit fq2fa data/DRR267109.sra.fastq               --out-file data/DRR267109.fasta     --threads 4 # PacBio
 
 # CDS予測
-# prodigalは並列処理が実装されておらず、シングルスレッドでの動作になるため、処理に時間がかかる
+# prodigalは並列処理が実装されておらず、シングルスレッドでの動作になるため、処理に非常に時間がかかる（数時間程度かかる）
 prodigal -i QC/DRR267104_merge.fasta -o gene/DRR267104.coords.gbk -a gene/DRR267104.prot.faa -d gene/DRR267104.nucl.fna -p meta -q
 prodigal -i QC/DRR267106_merge.fasta -o gene/DRR267106.coords.gbk -a gene/DRR267106.prot.faa -d gene/DRR267106.nucl.fna -p meta -q
 prodigal -i QC/DRR267108_merge.fasta -o gene/DRR267108.coords.gbk -a gene/DRR267108.prot.faa -d gene/DRR267108.nucl.fna -p meta -q
@@ -37,17 +37,19 @@ prodigal -i data/DRR267109.fasta     -o gene/DRR267109.coords.gbk -a gene/DRR267
 # データベースの準備
 download_eggnog_data.py --data_dir db/ -y
 
-# eggNOG_mapperの実行(非常に時間がかかる)
-emapper.py -i gene/DRR267104.prot.faa --output_dir annotation/ --output DRR267104_eggnog --data_dir db/ --cpu 4
-emapper.py -i gene/DRR267106.prot.faa --output_dir annotation/ --output DRR267106_eggnog --data_dir db/ --cpu 4
-emapper.py -i gene/DRR267108.prot.faa --output_dir annotation/ --output DRR267108_eggnog --data_dir db/ --cpu 4
-emapper.py -i gene/DRR267110.prot.faa --output_dir annotation/ --output DRR267110_eggnog --data_dir db/ --cpu 4
-emapper.py -i gene/DRR267102.prot.faa --output_dir annotation/ --output DRR267102_eggnog --data_dir db/ --cpu 4
-emapper.py -i gene/DRR267105.prot.faa --output_dir annotation/ --output DRR267105_eggnog --data_dir db/ --cpu 4
-emapper.py -i gene/DRR267107.prot.faa --output_dir annotation/ --output DRR267107_eggnog --data_dir db/ --cpu 4
-emapper.py -i gene/DRR267109.prot.faa --output_dir annotation/ --output DRR267109_eggnog --data_dir db/ --cpu 4
+# eggNOG_mapperの実行、処理に非常に時間がかかる
+# （筆者の環境では、--cpu 10のオプションで、各ファイルの処理に10時間前後かかった。必要に応じてsbatchの利用も検討してほしい)
+emapper.py -i gene/DRR267104.prot.faa --output_dir annotation/ --output DRR267104_eggnog --data_dir db/ --cpu 10
+emapper.py -i gene/DRR267106.prot.faa --output_dir annotation/ --output DRR267106_eggnog --data_dir db/ --cpu 10
+emapper.py -i gene/DRR267108.prot.faa --output_dir annotation/ --output DRR267108_eggnog --data_dir db/ --cpu 10
+emapper.py -i gene/DRR267110.prot.faa --output_dir annotation/ --output DRR267110_eggnog --data_dir db/ --cpu 10
+emapper.py -i gene/DRR267102.prot.faa --output_dir annotation/ --output DRR267102_eggnog --data_dir db/ --cpu 10
+emapper.py -i gene/DRR267105.prot.faa --output_dir annotation/ --output DRR267105_eggnog --data_dir db/ --cpu 10
+emapper.py -i gene/DRR267107.prot.faa --output_dir annotation/ --output DRR267107_eggnog --data_dir db/ --cpu 10
+emapper.py -i gene/DRR267109.prot.faa --output_dir annotation/ --output DRR267109_eggnog --data_dir db/ --cpu 10
+#???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 
-#カテゴリ集計
+# カテゴリ集計
 cat annotation/DRR267104_eggnog.emapper.annotations | grep -v "^#" | cut -f7 | fold -w 1 | sort | uniq -c | awk '{print "DRR267104\t"$2"\t"$1}' > annotation/DRR267104_eggnog.category.tsv
 cat annotation/DRR267106_eggnog.emapper.annotations | grep -v "^#" | cut -f7 | fold -w 1 | sort | uniq -c | awk '{print "DRR267106\t"$2"\t"$1}' > annotation/DRR267106_eggnog.category.tsv
 cat annotation/DRR267108_eggnog.emapper.annotations | grep -v "^#" | cut -f7 | fold -w 1 | sort | uniq -c | awk '{print "DRR267108\t"$2"\t"$1}' > annotation/DRR267108_eggnog.category.tsv

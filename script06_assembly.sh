@@ -4,6 +4,7 @@
 #  Created:  20241109
 #  History:  20241129
 #  - ref: https://ablab.github.io/spades/
+#  - ref: https://github.com/xfengnefx/hifiasm-meta
 #============================================================================================================
 
 # 解析環境構築
@@ -22,23 +23,24 @@ mkdir assembly/DRR267102_hifiasm_meta/  #事前に出力ディレクトリを作
 hifiasm_meta -o assembly/DRR267102_hifiasm_meta/DRR267102 data/DRR267102.sra.fastq -t 4
 
 # metaSPAdesの実行（ショートリード）【qsubでジョブを投入する場合】
-#sbatch ${tmpfile} --output QSUB/${b}.out --error QSUB/${b}.err"
-sbatch script06_assembly_DRR267104qsub.sh --output script06_assembly_DRR267104qsub.sh.out --error script06_assembly_DRR267104qsub.sh.err
-sbatch script06_assembly_DRR267106qsub.sh --output script06_assembly_DRR267106qsub.sh.out --error script06_assembly_DRR267106qsub.sh.err
-sbatch script06_assembly_DRR267108qsub.sh --output script06_assembly_DRR267108qsub.sh.out --error script06_assembly_DRR267108qsub.sh.err
-sbatch script06_assembly_DRR267110qsub.sh --output script06_assembly_DRR267110qsub.sh.out --error script06_assembly_DRR267110qsub.sh.err
+sbatch script06_assembly_DRR267104sbatch.sh --output script06_assembly_DRR267104sbatch.sh.out --error script06_assembly_DRR267104sbatch.sh.err
+sbatch script06_assembly_DRR267106sbatch.sh --output script06_assembly_DRR267106sbatch.sh.out --error script06_assembly_DRR267106sbatch.sh.err
+sbatch script06_assembly_DRR267108sbatch.sh --output script06_assembly_DRR267108sbatch.sh.out --error script06_assembly_DRR267108sbatch.sh.err
+sbatch script06_assembly_DRR267110sbatch.sh --output script06_assembly_DRR267110sbatch.sh.out --error script06_assembly_DRR267110sbatch.sh.err
 
 # hifiasm-metaの実行（ロングリードHiFi）【qsubでジョブを投入する場合】
-sbatch script06_assembly_DRR267102qsub.sh --output script06_assembly_DRR267102qsub.sh.out --error script06_assembly_DRR267102qsub.sh.err
-sbatch script06_assembly_DRR267105qsub.sh --output script06_assembly_DRR267105qsub.sh.out --error script06_assembly_DRR267105qsub.sh.err
-sbatch script06_assembly_DRR267107qsub.sh --output script06_assembly_DRR267107qsub.sh.out --error script06_assembly_DRR267107qsub.sh.err
-sbatch script06_assembly_DRR267109qsub.sh --output script06_assembly_DRR267109qsub.sh.out --error script06_assembly_DRR267109qsub.sh.err
+sbatch script06_assembly_DRR267102sbatch.sh --output script06_assembly_DRR267102sbatch.sh.out --error script06_assembly_DRR267102sbatch.sh.err
+sbatch script06_assembly_DRR267105sbatch.sh --output script06_assembly_DRR267105sbatch.sh.out --error script06_assembly_DRR267105sbatch.sh.err
+sbatch script06_assembly_DRR267107sbatch.sh --output script06_assembly_DRR267107sbatch.sh.out --error script06_assembly_DRR267107sbatch.sh.err
+sbatch script06_assembly_DRR267109sbatch.sh --output script06_assembly_DRR267109sbatch.sh.out --error script06_assembly_DRR267109sbatch.sh.err
+#???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 
-# gfaをfasta形式に変換する
-cat assembly/DRR267102_hifiasm_meta/DRR267102.p_ctg.gfa |awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267102_hifiasm_meta/DRR267102.p_ctg.fasta
-cat assembly/DRR267105_hifiasm_meta/DRR267105.p_ctg.gfa |awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267105_hifiasm_meta/DRR267105.p_ctg.fasta
-cat assembly/DRR267107_hifiasm_meta/DRR267107.p_ctg.gfa |awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267107_hifiasm_meta/DRR267107.p_ctg.fasta
-cat assembly/DRR267109_hifiasm_meta/DRR267109.p_ctg.gfa |awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267109_hifiasm_meta/DRR267109.p_ctg.fasta
+# gfaをfasta形式に変換する（hifiasm-metaの場合）
+cat assembly/DRR267102_hifiasm_meta/DRR267102.p_ctg.gfa | awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267102_hifiasm_meta/DRR267102.p_ctg.fasta
+cat assembly/DRR267105_hifiasm_meta/DRR267105.p_ctg.gfa | awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267105_hifiasm_meta/DRR267105.p_ctg.fasta
+cat assembly/DRR267107_hifiasm_meta/DRR267107.p_ctg.gfa | awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267107_hifiasm_meta/DRR267107.p_ctg.fasta
+cat assembly/DRR267109_hifiasm_meta/DRR267109.p_ctg.gfa | awk '/^S/{print ">"$2"\n"$3}' | fold > assembly/DRR267109_hifiasm_meta/DRR267109.p_ctg.fasta
 
-#統計値の確認
+# 統計値の確認
 seqkit stat assembly/DRR267104_spades/contigs.fasta assembly/DRR267102_hifiasm_meta/DRR267102.p_ctg.fasta
+seqkit stat assembly/*_hifiasm_meta/*.p_ctg.fasta

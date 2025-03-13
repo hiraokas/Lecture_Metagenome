@@ -49,18 +49,17 @@ g = ggplot(data = data.scores,
   # 凡例を縦並びにする
   guides(color = guide_legend(byrow = TRUE)) +
   # 軸や文字の体裁、余白を調整
-   theme(legend.key.size = unit(1.5, "cm"),
-         legend.title    = element_text(size  = 40),
-         legend.text     = element_text(size  = 30),
-         axis.text       = element_text(color = "black"),
-         axis.title.x    = element_text(size  = 40),
-         axis.title.y    = element_text(size  = 40),
-         axis.text.x     = element_text(size  = 30),
-         axis.text.y     = element_text(size  = 30),
-         axis.line       = element_line(color = "black"),
-         plot.margin     = unit(c(0.2,0,0,0), "lines")) 
+   theme(legend.key.size = unit(3, "lines"),
+         legend.title  = element_text(size  = 40),
+         legend.text   = element_text(size  = 30),
+         axis.text     = element_text(color = "black"),
+         axis.title.x  = element_text(size  = 40),
+         axis.title.y  = element_text(size  = 40),
+         axis.text.x   = element_text(size  = 26),
+         axis.text.y   = element_text(size  = 26),
+         axis.line     = element_line(color = "black"),
+         plot.margin   = unit(c(0.2, 0, 0, 0.2), "lines")) 
 plot(g)
 
 # 画像をファイル出力
-dev.copy(png, file = "script04_NMDS.png", width = 800, height = 500)
-dev.off()
+ggsave(plot = g, "script04_NMDS.png", dpi = 600, width = 10, height = 6)

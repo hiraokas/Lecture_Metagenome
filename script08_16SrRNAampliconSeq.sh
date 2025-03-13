@@ -3,7 +3,7 @@
 #  hiraokas@jamstec.go.jp
 #  Created:  20241014
 #  History:  20241129
-#  --ref: QIIME 2チュートリアル：https://docs.qiime2.org/2024.10/tutorials/moving-pictures/
+#  - ref: QIIME 2チュートリアル：https://docs.qiime2.org/2024.10/tutorials/moving-pictures/
 #============================================================================================================
 
 # conda環境構築とQIIME 2のインストール
@@ -43,8 +43,8 @@ qiime dada2 denoise-paired \
   --o-denoising-stats qiime/stats-dada2.qza
 
 # # DADA2の出力結果を可視化する
-# qiime feature-table summarize  \
-#   --i-table         qiime/table-dada2.qza  \
+# qiime feature-table summarize \
+#   --i-table         qiime/table-dada2.qza \
 #   --o-visualization qiime/table-dada2.qzv
 
 # 結果の統計値をテーブルに出力
@@ -63,4 +63,3 @@ qiime taxa barplot \
   --i-table         qiime/table-dada2.qza \
   --i-taxonomy      qiime/taxonomy.qza \
   --o-visualization qiime/taxa-bar-plots.qzv
-

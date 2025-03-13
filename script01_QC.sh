@@ -3,7 +3,6 @@
 #  hiraokas@jamstec.go.jp
 #  Created:  20241014
 #  History:  20250310
-#  - ref: http://nonpareil.readthedocs.io/en/latest/curves.html
 #============================================================================================================
 
 # minicondaのインストール

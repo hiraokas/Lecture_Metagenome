@@ -12,7 +12,7 @@ if (!require("tidyverse"))    install.packages("tidyverse")
 
 # データセットの読み込み、結合
 files = list.files("taxonomy/", pattern="phylum.tsv", full.names = T)
-data_phylum = do.call(rbind, lapply(files, function(x)(read.table(x, header=T, sep="\t", row.names = NULL))))
+data_phylum = do.call(rbind, lapply(files, function(x)(read.table(x, header = T, sep = "\t", row.names = NULL))))
 
 # サンプル名カラムの追加
 data_phylum$sample = sub("taxonomy/", "", sub(".kaiju.out", "", data_phylum$file))
@@ -65,10 +65,9 @@ g = ggplot(data_phylum_top10,
         legend.text     = element_text(size = 20),
         legend.title    = element_blank(),
         legend.position = "bottom",
-        plot.margin     = unit(c(0, 0.8, 0, 0.1), "cm"),
+        plot.margin     = unit(c(1, 2, 0, 1), "lines"),
         panel.border    = element_rect(color = NA, fill = NA))
 plot(g)
 
 # 画像をファイル出力
-dev.copy(png, file = "script03_taxonomy.png", width = 800, height = 500)
-dev.off()
+ggsave(plot = g, "script03_taxonomy.png", dpi = 600, width = 10, height = 6)

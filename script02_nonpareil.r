@@ -22,10 +22,10 @@ plot_nonpareil <- function(input_filename, Color){
                         plot.diversity  = FALSE,
                         cex.axis = 1.5, new = TRUE)
     axis(1, lwd = 3, cex.axis = 1.5)
-    axis(2, lwd = 3, cex.axis = 1.5,
+    axis(2, lwd = 3, cex.axis = 1.5, las = 1,
          at     = c(  0,  0.2,  0.4,  0.6,  0.8, 0.95,     1), 
          labels = c("0", "20", "40", "60", "80", "95", "100"))
-    title(xlab = "配列データサイズ (bp)", 
+    title(xlab = "データ量 (bp)", 
           ylab = "メタゲノムカバレッジ (%)", 
           main = NA, cex.lab = 2, line = 3.5)
     return(p)   
@@ -36,7 +36,10 @@ InputFilename_list = c("nonpareil/DRR267104.npo",
                        "nonpareil/DRR267108.npo",
                        "nonpareil/DRR267110.npo")
 
-par(mar = c(5,5.5,1.5,1))
+#画像のファイル出力用の設定
+png("script02_nonpareil.png", width = 4200, height = 3600, res = 600)
+
+par(mar = c(5, 5.5, 1, 1))
 ColorList = brewer.pal(8, "Set2")
 p1 = plot_nonpareil(InputFilename_list[1], ColorList[1]); par(new = T); p1$label = "DRR267104"
 p2 = plot_nonpareil(InputFilename_list[2], ColorList[2]); par(new = T); p2$label = "DRR267106" 
@@ -47,6 +50,7 @@ Nonpareil.legend(c(p1, p2, p3, p4), 2000, 0.85,
                  box.lty = 1, box.lwd = 3, cex = 1.2,
                  y.intersp = 1, x.intersp = 0.3,
                  text.width = 2.2)
+dev.off()
 
 # カバレッジ値の表示
 print(predict(p1) * 100)
