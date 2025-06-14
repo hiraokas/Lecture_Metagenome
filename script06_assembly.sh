@@ -28,6 +28,12 @@ sbatch script06_assembly_DRR267106sbatch.sh --output script06_assembly_DRR267106
 sbatch script06_assembly_DRR267108sbatch.sh --output script06_assembly_DRR267108sbatch.sh.out --error script06_assembly_DRR267108sbatch.sh.err
 sbatch script06_assembly_DRR267110sbatch.sh --output script06_assembly_DRR267110sbatch.sh.out --error script06_assembly_DRR267110sbatch.sh.err
 
+sbatch script06_assembly_DRR267104sbatch_epyc.sh --output script06_assembly_DRR267104sbatch_epyc.sh.out --error script06_assembly_DRR267104sbatch_epyc.sh.err
+sbatch script06_assembly_DRR267106sbatch_epyc.sh --output script06_assembly_DRR267106sbatch_epyc.sh.out --error script06_assembly_DRR267106sbatch_epyc.sh.err
+sbatch script06_assembly_DRR267108sbatch_epyc.sh --output script06_assembly_DRR267108sbatch_epyc.sh.out --error script06_assembly_DRR267108sbatch_epyc.sh.err
+sbatch script06_assembly_DRR267110sbatch_epyc.sh --output script06_assembly_DRR267110sbatch_epyc.sh.out --error script06_assembly_DRR267110sbatch_epyc.sh.err
+
+
 # hifiasm-metaの実行（ロングリードHiFi）【ジョブスケジューラを利用する場合】
 sbatch script06_assembly_DRR267102sbatch.sh --output script06_assembly_DRR267102sbatch.sh.out --error script06_assembly_DRR267102sbatch.sh.err
 sbatch script06_assembly_DRR267105sbatch.sh --output script06_assembly_DRR267105sbatch.sh.out --error script06_assembly_DRR267105sbatch.sh.err
